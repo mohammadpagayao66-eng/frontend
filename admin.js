@@ -21,13 +21,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
           price: formData.get('price'),
           image: formData.get('image')
         };
+         console.log('Sending product data:', data);
         const res = await fetch(`${API}/products`, { 
           method:'POST', 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data) 
         });
         const result = await res.json();
-        if(res.ok){
+         console.log('Response:', result);
+        if(res.ok){        
           msgDiv.innerHTML = '<div class="alert success">✓ Product added successfully</div>';
           productForm.reset();
           setTimeout(() => msgDiv.innerHTML = '', 3000);
@@ -217,6 +219,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 });
+
 
 
 
