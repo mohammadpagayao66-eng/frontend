@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard - Pagayao Store</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="config.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Amazon Ember', Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    
+    .dashboard-header {
+      background-color: #232f3e;
+      padding: 12px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      flex: 1;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FF9900;
+      font-style: italic;
+    }
+    
+    .welcome-text h2 {
+      font-size: 14px;
+      margin: 0;
+      color: white;
+    }
+    
+    .welcome-text small {
+      font-size: 12px;
+      color: #aaa;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .header-actions a, .header-actions button {
+      background-color: #FF9900;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .header-actions button {
+      background-color: #cc3d00;
+    }
+    
+    .header-actions a:hover, .header-actions button:hover {
+      opacity: 0.9;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .welcome-section {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 6px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .welcome-section h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .welcome-section p {
+      font-size: 14px;
+      color: #ddd;
+    }
+    
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #232f3e;
+      margin: 30px 0 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    
+    .product-card {
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    
+    .product-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(-4px);
+    }
+    
+    .product-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background-color: #f0f0f0;
+    }
+    
+    .product-info {
+      padding: 12px;
+    }
+    
+    .product-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #232f3e;
+      margin-bottom: 8px;
+      min-height: 35px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .product-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: #B12704;
+      margin-bottom: 10px;
+    }
+    
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 8px;
+      background-color: #FF9900;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .add-to-cart-btn:hover {
+      background-color: #e58a00;
+    }
+  </style>
+</head>
+<body>
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <span class="logo">Pagayao</span>
+        <div class="welcome-text">
+          <h2>Dashboard</h2>
+          <small>Welcome back, <span id="userName">User</span></small>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="index.html">🏠 Home</a>
+        <a href="cart.html">🛒 Cart</a>
+        <button id="logoutBtn">🚪 Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="welcome-section">
+      <h1>👋 Welcome back, <span id="dashUserName">User</span>!</h1>
+      <p>Explore our amazing collection and add your favorite products to cart</p>
+    </section>
+
+    <h2 class="section-title">⭐ Featured Products</h2>
+    <div id="products" class="products-grid"></div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    const user = JSON.parse(localStorage.getItem('blue_user'));
+    if(!user || !user.id) {
+      alert('Please login first');
+      location.href = 'login.html';
+    } else {
+      document.getElementById('userName').textContent = user.name;
+      document.getElementById('dashUserName').textContent = user.name;
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if(confirm('Are you sure you want to logout?')){
+        localStorage.removeItem('blue_user');
+        location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>
+

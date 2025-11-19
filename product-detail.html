@@ -1,0 +1,383 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Product Details - Pagayao Store</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="config.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Amazon Ember', Arial, sans-serif; background-color: #f5f5f5; }
+    .header { background-color: #232f3e; padding: 12px 20px; position: sticky; top: 0; z-index: 100; }
+    .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: 700; color: #FF9900; text-decoration: none; font-style: italic; }
+    .nav a { color: #fff; text-decoration: none; font-size: 14px; margin-left: 20px; }
+    .nav a:hover { color: #FF9900; }
+    .container { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
+    .back-link { display: inline-block; margin-bottom: 20px; color: #FF9900; text-decoration: none; font-weight: 600; }
+    .back-link:hover { text-decoration: underline; }
+    .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-top: 20px; max-width: 1200px; }
+    .image-section { background: white; padding: 20px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .image-section img { width: 100%; height: auto; border-radius: 6px; }
+    .details-section { background: white; padding: 20px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .details-section h1 { font-size: 28px; font-weight: 700; color: #232f3e; margin: 0 0 15px 0; }
+    .price-section { display: flex; align-items: center; gap: 15px; margin: 20px 0; padding: 15px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+    .price { font-size: 32px; font-weight: 700; color: #B12704; }
+    .in-stock { background-color: #10b981; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .description { color: #555; line-height: 1.7; margin: 20px 0; }
+    .quantity-section { margin: 20px 0; }
+    .quantity-section h3 { color: #232f3e; margin-bottom: 10px; font-size: 14px; }
+    .qty-controls { display: flex; gap: 10px; align-items: center; }
+    .qty-btn { width: 40px; height: 40px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-weight: 600; }
+    .qty-input { width: 70px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-weight: 600; }
+    .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+    .btn { padding: 12px; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 15px; }
+    .btn-cart { background-color: #FF9900; color: white; }
+    .btn-cart:hover { background-color: #e58a00; }
+    .btn-buy { background-color: #0066cc; color: white; }
+    .btn-buy:hover { background-color: #0052a3; }
+    .features { background-color: #f9f5f0; border-left: 4px solid #FF9900; padding: 15px; border-radius: 4px; margin-top: 20px; }
+    .features h4 { color: #232f3e; margin-top: 0; margin-bottom: 10px; }
+    .features ul { list-style: none; padding: 0; font-size: 13px; color: #555; }
+    .features li { padding: 5px 0; }
+    .message { margin: 15px 0; padding: 12px; border-radius: 4px; font-size: 14px; }
+    .message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    @media (max-width: 768px) {
+      .product-layout { grid-template-columns: 1fr; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="logo">Pagayao</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="cart.html">Cart</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <a class="back-link" href="javascript:history.back()">← Back</a>
+    
+    <div class="product-layout">
+      <div class="image-section">
+        <img id="mainImage" src="" alt="Product" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22%23999%22%3ENo Image%3C/text%3E%3C/svg%3E'"/>
+      </div>
+
+      <div class="details-section">
+        <h1 id="productName">Product Name</h1>
+        
+        <div class="price-section">
+          <div class="price">₱ <span id="productPrice">0.00</span></div>
+          <div class="in-stock">✓ In Stock</div>
+        </div>
+
+        <p id="productDescription" class="description">Loading product details...</p>
+
+        <div class="quantity-section">
+          <h3>Quantity</h3>
+          <div class="qty-controls">
+            <button class="qty-btn" id="decreaseQty">−</button>
+            <input type="number" id="quantity" class="qty-input" value="1" min="1"/>
+            <button class="qty-btn" id="increaseQty">+</button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-cart" id="addCartBtn">🛒 Add to Cart</button>
+          <button class="btn btn-buy" id="buyNowBtn">💳 Buy Now</button>
+        </div>
+
+        <div id="message"></div>
+
+        <div class="features">
+          <h4>📦 Product Information</h4>
+          <ul>
+            <li>✓ Original & Genuine Product</li>
+            <li>✓ Cash on Delivery Available</li>
+            <li>✓ Fast & Secure Delivery</li>
+            <li>✓ 30-Day Money Back Guarantee</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = (window.API_URL || 'http://localhost:5000') + '/api';
+    const messageDiv = document.getElementById('message');
+    let product = null;
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+
+    if (!productId) {
+      messageDiv.innerHTML = '<div class="message error">Product not found</div>';
+    } else {
+      fetch(`${API}/products/${productId}`)
+        .then(res => res.json())
+        .then(data => {
+          product = data;
+          document.getElementById('productName').textContent = product.name;
+          document.getElementById('productPrice').textContent = Number(product.price).toFixed(2);
+          document.getElementById('productDescription').textContent = product.description || 'No description available';
+          
+          const img = document.getElementById('mainImage');
+          if (product.imageUrl) {
+            const imageSrc = product.imageUrl.startsWith('http') ? product.imageUrl : ((window.API_URL || window.location.origin) + product.imageUrl);
+            img.src = imageSrc;
+          }
+          
+          document.title = `${product.name} - Pagayao Store`;
+        })
+        .catch(err => {
+          console.error('Error:', err);
+          messageDiv.innerHTML = '<div class="message error">Failed to load product</div>';
+        });
+    }
+
+    document.getElementById('decreaseQty').addEventListener('click', () => {
+      const qty = document.getElementById('quantity');
+      if (qty.value > 1) qty.value--;
+    });
+
+    document.getElementById('increaseQty').addEventListener('click', () => {
+      const qty = document.getElementById('quantity');
+      qty.value = parseInt(qty.value) + 1;
+    });
+
+    document.getElementById('addCartBtn').addEventListener('click', () => {
+      if (!product) return;
+      const qty = parseInt(document.getElementById('quantity').value);
+      const user = JSON.parse(localStorage.getItem('blue_user') || '{}');
+      
+      if (!user.id) {
+        alert('Please login first');
+        location.href = 'login.html';
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem('blue_cart') || '[]');
+      const existingItem = cart.find(item => item._id === product._id);
+      
+      if (existingItem) {
+        existingItem.qty += qty;
+      } else {
+        cart.push({
+          _id: product._id,
+          name: product.name,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          qty: qty
+        });
+      }
+      
+      localStorage.setItem('blue_cart', JSON.stringify(cart));
+      messageDiv.innerHTML = '<div class="message success">✓ Added to cart! <a href="cart.html" style="color:#155724;font-weight:600;text-decoration:none;">View Cart</a></div>';
+      setTimeout(() => messageDiv.innerHTML = '', 4000);
+    });
+
+    document.getElementById('buyNowBtn').addEventListener('click', () => {
+      if (!product) return;
+      const qty = parseInt(document.getElementById('quantity').value);
+      const user = JSON.parse(localStorage.getItem('blue_user') || '{}');
+      
+      if (!user.id) {
+        alert('Please login first');
+        location.href = 'login.html';
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem('blue_cart') || '[]');
+      const existingItem = cart.find(item => item._id === product._id);
+      
+      if (existingItem) {
+        existingItem.qty += qty;
+      } else {
+        cart.push({
+          _id: product._id,
+          name: product.name,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          qty: qty
+        });
+      }
+      
+      localStorage.setItem('blue_cart', JSON.stringify(cart));
+      location.href = 'cart.html';
+    });
+  </script>
+</body>
+</html>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-top:24px;max-width:1000px;width:100%">
+      <!-- Product Image -->
+      <div class="form" style="padding:0;overflow:hidden">
+        <div id="productImage" style="width:100%;height:400px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;border-radius:12px">
+          <img id="mainImage" src="" alt="Product" style="width:100%;height:100%;object-fit:cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23e0e0e0%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22%23999%22%3EProduct Image Not Available%3C/text%3E%3C/svg%3E'"/>
+        </div>
+      </div>
+
+      <!-- Product Details -->
+      <div class="form">
+        <h1 id="productName" style="color:var(--ocean-1);margin-top:0">Product Name</h1>
+        
+        <div style="display:flex;align-items:center;gap:12px;margin:16px 0">
+          <div style="font-size:24px;font-weight:700;color:var(--ocean-2)">₱ <span id="productPrice">0.00</span></div>
+          <div style="background:var(--success);color:white;padding:4px 12px;border-radius:6px;font-size:13px;font-weight:600">In Stock</div>
+        </div>
+
+        <p id="productDescription" style="color:#666;line-height:1.7;margin:16px 0">Product description goes here</p>
+
+        <div style="margin-top:24px;padding-top:24px;border-top:1px solid #eee">
+          <h3 style="color:var(--ocean-1);margin-top:0">Quantity</h3>
+          <div style="display:flex;gap:12px;align-items:center">
+            <button class="btn small" id="decreaseQty" style="background:#999;padding:8px 12px">−</button>
+            <input type="number" id="quantity" value="1" min="1" style="width:60px;padding:8px;border:1px solid #ddd;border-radius:6px;text-align:center;font-weight:600"/>
+            <button class="btn small" id="increaseQty" style="background:#999;padding:8px 12px">+</button>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <button class="btn" id="addCartBtn" style="width:100%;background:var(--ocean-2)">🛒 Add to Cart</button>
+          <button class="btn" id="buyNowBtn" style="width:100%;background:var(--accent)">💳 Buy Now</button>
+        </div>
+
+        <div id="message" style="margin-top:16px"></div>
+
+        <div style="background:rgba(15,155,211,0.1);padding:16px;border-radius:8px;margin-top:24px;border-left:4px solid var(--ocean-2)">
+          <h4 style="color:var(--ocean-1);margin-top:0">📦 Product Information</h4>
+          <ul style="margin:0;padding-left:20px;color:#666;font-size:14px">
+            <li>Original & Genuine Product</li>
+            <li>Cash on Delivery Available</li>
+            <li>Free Shipping on Orders Over ₱500</li>
+            <li>30-Day Money Back Guarantee</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="interactions.js"></script>
+  <script>
+    const API = (window.API_URL || 'http://localhost:5000') + '/api';
+    const messageDiv = document.getElementById('message');
+    let product = null;
+
+    // Get product ID from URL
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+
+    if (!productId) {
+      messageDiv.innerHTML = '<div class="alert error">Product not found</div>';
+    } else {
+      // Fetch product details
+      fetch(`${API}/products/${productId}`)
+        .then(res => res.json())
+        .then(data => {
+          product = data;
+          document.getElementById('productName').textContent = product.name;
+          document.getElementById('productPrice').textContent = Number(product.price).toFixed(2);
+          document.getElementById('productDescription').textContent = product.description || 'No description available';
+          
+          // Load image with proper URL handling
+          const img = document.getElementById('mainImage');
+          if (product.imageUrl) {
+            const imageSrc = product.imageUrl.startsWith('http') ? product.imageUrl : ((window.API_URL || window.location.origin) + product.imageUrl);
+            img.src = imageSrc;
+          } else {
+            // Use placeholder SVG if no image
+            img.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23e0e0e0%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22%23999%22%3ENo Image Available%3C/text%3E%3C/svg%3E';
+          }
+          
+          document.title = `${product.name} - BlueTech`;
+        })
+        .catch(err => {
+          console.error('Error loading product:', err);
+          messageDiv.innerHTML = '<div class="alert error">Failed to load product</div>';
+        });
+    }
+
+    // Quantity controls
+    document.getElementById('decreaseQty').addEventListener('click', () => {
+      const qty = document.getElementById('quantity');
+      if (qty.value > 1) qty.value--;
+    });
+
+    document.getElementById('increaseQty').addEventListener('click', () => {
+      const qty = document.getElementById('quantity');
+      qty.value = parseInt(qty.value) + 1;
+    });
+
+    // Add to cart
+    document.getElementById('addCartBtn').addEventListener('click', () => {
+      if (!product) return;
+      const qty = parseInt(document.getElementById('quantity').value);
+      const user = JSON.parse(localStorage.getItem('blue_user') || '{}');
+      
+      if (!user.id) {
+        alert('Please login first');
+        location.href = 'login.html';
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem('blue_cart') || '[]');
+      const existingItem = cart.find(item => item._id === product._id);
+      
+      if (existingItem) {
+        existingItem.qty += qty;
+      } else {
+        cart.push({
+          _id: product._id,
+          name: product.name,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          qty: qty
+        });
+      }
+      
+      localStorage.setItem('blue_cart', JSON.stringify(cart));
+      messageDiv.innerHTML = '<div class="alert success">✓ Added to cart! <a href="cart.html" style="color:var(--success);font-weight:600">View Cart</a></div>';
+      setTimeout(() => messageDiv.innerHTML = '', 4000);
+    });
+
+    // Buy now
+    document.getElementById('buyNowBtn').addEventListener('click', () => {
+      if (!product) return;
+      const qty = parseInt(document.getElementById('quantity').value);
+      const user = JSON.parse(localStorage.getItem('blue_user') || '{}');
+      
+      if (!user.id) {
+        alert('Please login first');
+        location.href = 'login.html';
+        return;
+      }
+
+      // Add to cart and redirect to checkout
+      const cart = JSON.parse(localStorage.getItem('blue_cart') || '[]');
+      const existingItem = cart.find(item => item._id === product._id);
+      
+      if (existingItem) {
+        existingItem.qty += qty;
+      } else {
+        cart.push({
+          _id: product._id,
+          name: product.name,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          qty: qty
+        });
+      }
+      
+      localStorage.setItem('blue_cart', JSON.stringify(cart));
+      location.href = 'cart.html';
+    });
+  </script>
+</body>
+</html>
+
+    
