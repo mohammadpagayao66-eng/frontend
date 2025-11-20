@@ -34,9 +34,9 @@ function renderProducts(list){
     let imageHtml = '';
     if (p.imageUrl) {
       const imageSrc = p.imageUrl.startsWith('http') ? p.imageUrl : ((window.API_URL || window.location.origin) + p.imageUrl);
-      imageHtml = `<img src="${imageSrc}" alt="${p.name}" class="product-image" loading="lazy" onerror="this.style.display='none'"/>`;
+     imageHtml = `<img src="${imageSrc}" alt="${p.name}" class="product-image" loading="lazy" onerror="if(!this.dataset.errorHandled){this.dataset.errorHandled='true';this.style.display='none';this.parentElement.innerHTML='<div class=\\'product-image\\' style=\\'display:flex;align-items:center;justify-content:center;color:#a0aac0;font-size:14px;\\'>Image unavailable</div>';}"/>`;
     } else {
-      imageHtml = '<div class="product-image" style="display:flex;align-items:center;justify-content:center;color:#a0aac0;font-size:14px;"> No image</div>';
+     imageHtml = '<div class="product-image" style="display:flex;align-items:center;justify-content:center;color:#a0aac0;font-size:14px;">No image</div>';
     }
     
     div.innerHTML = `
@@ -94,6 +94,7 @@ function addToCart(item){
 }
 
 window.addEventListener('load', fetchProducts);
+
 
 
 
