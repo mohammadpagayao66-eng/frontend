@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
           name: formData.get('name'),
           description: formData.get('description'),
           price: formData.get('price'),
-          image: formData.get('image')
+         imageUrl: formData.get('image')
         };
          console.log('Sending product data:', data);
         const res = await fetch(`${API}/products`, { 
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
               name: document.getElementById('edit-name').value,
               description: document.getElementById('edit-description').value,
               price: document.getElementById('edit-price').value,
-              image: document.getElementById('edit-image').value || undefined
+             imageUrl: document.getElementById('edit-image').value || undefined
             };
             try {
               const res = await fetch(`${API}/products/${p._id}`, { 
@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 });
+
 
 
 
