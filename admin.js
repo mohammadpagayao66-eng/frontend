@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
           name: formData.get('name'),
           description: formData.get('description'),
           price: formData.get('price'),
-         imageUrl: formData.get('image')
+           imageUrl: formData.get('image')
         };
          console.log('Sending product data:', data);
         const res = await fetch(`${API}/products`, { 
@@ -118,9 +118,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
         let imageHtml = '';
         if (p.imageUrl) {
           const imageSrc = p.imageUrl.startsWith('http') ? p.imageUrl : ((window.API_URL || window.location.origin) + p.imageUrl);
-          imageHtml = `<img src="${imageSrc}" alt="${p.name}" style="width:100%;height:90px;object-fit:cover;border-radius:0" loading="lazy" onerror="this.style.display='none';this.parentElement.style.background='#f0f0f0';this.parentElement.innerHTML='<div style=\\'width:100%;height:90px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px\\'>📷 No image</div>'"/>`;
+          imageHtml = `<img src="${imageSrc}" alt="${p.name}" style="width:100%;height:90px;object-fit:cover;border-radius:0" loading="lazy" onerror="if(!this.dataset.errorHandled){this.dataset.errorHandled='true';this.style.display='none';this.parentElement.innerHTML='<div style=\\'width:100%;height:90px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px\\'>📷 Image unavailable</div>';}"/>`;
         } else {
-          imageHtml = '<div style="width:100%;height:90px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;border-radius:0"</div>';
+           imageHtml = '<div style="width:100%;height:90px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;border-radius:0">No image</div>';
         }
         
         div.innerHTML = `
@@ -176,12 +176,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
           const onSubmit = async (ev) => {
             ev.preventDefault();
             const msgDiv = document.getElementById('productMsg');
+             const imageUrlValue = (document.getElementById('edit-image').value || '').trim();
             const data = {
               name: document.getElementById('edit-name').value,
               description: document.getElementById('edit-description').value,
-              price: document.getElementById('edit-price').value,
-             imageUrl: document.getElementById('edit-image').value || undefined
+              price: document.getElementById('edit-price').value
+            
             };
+              // Only include imageUrl if it's provided and not empty
+            if (imageUrlValue) {
+              data.imageUrl = imageUrlValue;
+            }
+            
             try {
               const res = await fetch(`${API}/products/${p._id}`, { 
                 method: 'PUT',
@@ -219,6 +225,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 });
+
 
 
 
