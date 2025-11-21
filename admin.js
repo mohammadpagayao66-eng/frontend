@@ -167,30 +167,32 @@ document.addEventListener('DOMContentLoaded', ()=>{
           document.getElementById('edit-price').value = p.price || 0;
           imageInput.value = p.imageUrl || '';
           
-          // Show current image preview
-          if (p.imageUrl) {
-            const imageSrc = p.imageUrl.startsWith('http') ? p.imageUrl : ((window.API_URL || window.location.origin) + p.imageUrl);
-            preview.innerHTML = `<div style="margin-top:10px;"><strong>Current Image:</strong><br><img src="${imageSrc}" style="max-width:100%;max-height:200px;border-radius:6px;margin-top:8px;" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<p style=\\'color:#f66\\'>Image failed to load</p>'"/></div>`;
-          } else {
-            preview.innerHTML = '';
-          }
-          
-          // Live preview as user types image URL
-          imageInput.addEventListener('input', (e) => {
-            const url = e.target.value.trim();
+          // Function to update preview
+          const updatePreview = () => {
+            const url = imageInput.value.trim();
             if (url && url.startsWith('http')) {
-              preview.innerHTML = `<div style="margin-top:10px;"><strong>New Image Preview:</strong><br><img src="${url}" style="max-width:100%;max-height:200px;border-radius:6px;margin-top:8px;" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<p style=\\'color:#f66\\'>Image URL invalid or failed to load</p>'"/></div>`;
+              preview.innerHTML = `<div style="margin-top:10px;"><strong>Image Preview:</strong><br><img src="${url}" style="max-width:100%;max-height:200px;border-radius:6px;margin-top:8px;" loading="lazy" onerror="if(!this.dataset.errorHandled){this.dataset.errorHandled='true';this.style.display='none';this.parentElement.innerHTML='<p style=\\'color:#f66\\'>⚠️ Image URL invalid or failed to load</p>';}"/></div>`;
             } else if (url) {
               preview.innerHTML = '<div style="margin-top:10px;color:#f66;"><small>⚠️ Please enter a valid image URL (must start with http:// or https://)</small></div>';
             } else {
               if (p.imageUrl) {
                 const imageSrc = p.imageUrl.startsWith('http') ? p.imageUrl : ((window.API_URL || window.location.origin) + p.imageUrl);
-                preview.innerHTML = `<div style="margin-top:10px;"><strong>Current Image:</strong><br><img src="${imageSrc}" style="max-width:100%;max-height:200px;border-radius:6px;margin-top:8px;" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<p style=\\'color:#f66\\'>Image failed to load</p>'"/></div>`;
+                preview.innerHTML = `<div style="margin-top:10px;"><strong>Current Image:</strong><br><img src="${imageSrc}" style="max-width:100%;max-height:200px;border-radius:6px;margin-top:8px;" loading="lazy" onerror="if(!this.dataset.errorHandled){this.dataset.errorHandled='true';this.style.display='none';this.parentElement.innerHTML='<p style=\\'color:#f66\\'>⚠️ Image failed to load</p>';}"/></div>`;
               } else {
-                preview.innerHTML = '';
+                preview.innerHTML = '<div style="margin-top:10px;color:#999;"><small>No image assigned</small></div>';
               }
             }
-          });
+          };
+          
+          // Show initial preview
+          updatePreview();
+          
+          // Remove old input listener if exists
+          imageInput.removeEventListener('input', imageInput._previewListener);
+          
+          // Live preview as user types image URL
+          imageInput._previewListener = updatePreview;
+          imageInput.addEventListener('input', imageInput._previewListener);
           
           modal.style.display = 'flex';
 
@@ -244,6 +246,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 });
+
+
+
+
+
+
 
 
 
