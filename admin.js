@@ -19,17 +19,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
           name: formData.get('name'),
           description: formData.get('description'),
           price: formData.get('price'),
-           imageUrl: formData.get('image')
+          imageUrl: formData.get('image')
         };
-         console.log('Sending product data:', data);
+        console.log('Sending product data:', data);
         const res = await fetch(`${API}/products`, { 
           method:'POST', 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data) 
         });
         const result = await res.json();
-         console.log('Response:', result);
-        if(res.ok){        
+        console.log('Response:', result);
+        if(res.ok){
           msgDiv.innerHTML = '<div class="alert success">✓ Product added successfully</div>';
           productForm.reset();
           setTimeout(() => msgDiv.innerHTML = '', 3000);
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
           const imageSrc = p.imageUrl.startsWith('http') ? p.imageUrl : ((window.API_URL || window.location.origin) + p.imageUrl);
           imageHtml = `<img src="${imageSrc}" alt="${p.name}" style="width:100%;height:90px;object-fit:cover;border-radius:0" loading="lazy" onerror="if(!this.dataset.errorHandled){this.dataset.errorHandled='true';this.style.display='none';this.parentElement.innerHTML='<div style=\\'width:100%;height:90px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px\\'>📷 Image unavailable</div>';}"/>`;
         } else {
-           imageHtml = '<div style="width:100%;height:90px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;border-radius:0">No image</div>';
+          imageHtml = '<div style="width:100%;height:90px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;border-radius:0">No image</div>';
         }
         
         div.innerHTML = `
@@ -159,20 +159,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
         div.querySelector('.editProduct').addEventListener('click', async () => {
           const modal = document.getElementById('editProductModal');
           const form = document.getElementById('editProductForm');
-           const imageInput = document.getElementById('edit-image');
-          const preview = document.getElementById('edit-image-preview');      
+          const imageInput = document.getElementById('edit-image');
+          const preview = document.getElementById('edit-image-preview');
+          
           document.getElementById('edit-name').value = p.name || '';
           document.getElementById('edit-description').value = p.description || '';
           document.getElementById('edit-price').value = p.price || 0;
-           imageInput.value = p.imageUrl || '';          
-          const preview = document.getElementById('edit-image-preview');
+          imageInput.value = p.imageUrl || '';
+          
+          // Show current image preview
           if (p.imageUrl) {
             const imageSrc = p.imageUrl.startsWith('http') ? p.imageUrl : ((window.API_URL || window.location.origin) + p.imageUrl);
             preview.innerHTML = `<div style="margin-top:10px;"><strong>Current Image:</strong><br><img src="${imageSrc}" style="max-width:100%;max-height:200px;border-radius:6px;margin-top:8px;" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<p style=\\'color:#f66\\'>Image failed to load</p>'"/></div>`;
           } else {
             preview.innerHTML = '';
           }
-            
+          
           // Live preview as user types image URL
           imageInput.addEventListener('input', (e) => {
             const url = e.target.value.trim();
@@ -188,25 +190,23 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 preview.innerHTML = '';
               }
             }
-          }); 
+          });
           
           modal.style.display = 'flex';
 
           const onSubmit = async (ev) => {
             ev.preventDefault();
             const msgDiv = document.getElementById('productMsg');
-             const imageUrlValue = (document.getElementById('edit-image').value || '').trim();
+            const imageUrlValue = (document.getElementById('edit-image').value || '').trim();
             const data = {
               name: document.getElementById('edit-name').value,
               description: document.getElementById('edit-description').value,
               price: document.getElementById('edit-price').value
-            
             };
-              // Only include imageUrl if it's provided and not empty
+            // Only include imageUrl if it's provided and not empty
             if (imageUrlValue) {
               data.imageUrl = imageUrlValue;
             }
-            
             try {
               const res = await fetch(`${API}/products/${p._id}`, { 
                 method: 'PUT',
@@ -244,6 +244,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 });
+
+
+
+
+
 
 
 
